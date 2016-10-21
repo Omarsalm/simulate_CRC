@@ -1,42 +1,60 @@
-#ifdef CRC_CPP
-#define CRC_CPP
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <fstream>
-#include <bitset>
 
 using namespace std;
 
+const int MsgLen = 12160;
+const int NoiLen = 32;
+
+void makeOriMsg();
 string getContent(char* );
 void putContent(char* , string);
 int XOR(int , int );
 void display(int* a, int len);
+int* str2int(int* intArray, string str);
+string int2str(int* intArray, int len);
 string cmpR(string message, string generator);
 void isError(string remainder);
+string interrupte(string);
 
 int main()
 {
-    string generator = getContent("generator");
-    cout <<"generator: " <<  generator << endl;
-
-    string message = getContent("message");
-    cout << "message: " << message << endl;
-
-    string padded = message.append(generator.size() - 1, '0');
-    cout << "padded message: " << padded << endl;
-
-    string remainder = cmpR(message, generator);
-    cout << "remainder: " << remainder << endl;
-    putContent("remainder", remainder);
-
-    string processed = padded.replace(padded.size() - (generator.size() - 1), generator.size() - 1, remainder);
-    cout << "processed message: " << processed << endl;
-    putContent("processed", processed);
-    processed = getContent("processed");
-    remainder = cmpR(processed, generator);
-    cout << "the remainder of processed message: " << remainder << endl;
-    isError(remainder);
+    char* msgFile = "message";
+    char* genFile = "generator";
+    char* remainderFile = "remainder";
+    string message;
+    string padded;
+    string remainder;
+    string gen = getContent("generator");
+    string noiseMsg;
+    const int degree = gen.size() - 1;
+    const int expeNum = 1000;
+    for(int i = 0; i < expeNum; i++){
+        makeOriMsg();
+        message = getContent(msgFile);
+        padded = message.append(degree, '0');
+        remainder = cmpR(message, gen);
+        noiseMsg = interrupte(message);
+        remainder = cmpR(noiseMsg, gen);
+        putContent(remainderFile, remainder);
+        isError(remainder);
+        cout << "No. " << i + 1 << " experimentation is finished!" << endl;
+    }
     return 0;
+}
+
+string interrupte(string oriMsg)
+{
+    srand(time(NULL));
+    int pos = rand() % MsgLen;
+
+    for(int i = 0; i < NoiLen; i++){
+        if(oriMsg[i] == '0') oriMsg[i] = '1';
+        if(oriMsg[i] == '1') oriMsg[i] = '0';
+    }
+    return oriMsg;
 }
 
 void isError(string remainder)
@@ -49,6 +67,17 @@ void isError(string remainder)
     }
     cout << "The transmitted message has no error!\n" << endl;
     return;
+}
+
+void makeOriMsg()
+{
+    int* randInt = (int*)malloc(sizeof(int) * MsgLen);
+    srand(time(NULL));
+    for(int i = 0; i < MsgLen; i++){
+       randInt[i] = rand() % 2;
+    }
+    string OriMsg = int2str(randInt, MsgLen);
+    putContent("message", OriMsg);
 }
 
 string getContent(char* fileName)
@@ -136,4 +165,3 @@ string cmpR(string message, string generator)
     //cout << "remainder: " << remainder << endl;
     return remainder;
 }
-#endif
