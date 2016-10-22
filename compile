@@ -1,3 +1,4 @@
 #!/bin/bash
 
-g++ crc.cpp -o crc
+g++ crc.cpp crc_class.h crc_class.cpp -o crc
+g++ experimentation.cpp crc_class.h crc_class.cpp -o experimentation

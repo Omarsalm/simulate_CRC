@@ -1,27 +1,34 @@
-# simulate the computation of CRC(circlyic redundence check)
+# simulate the computation of CRC(circlyic redundence check) and test the detection capability of CRC
 
-Given the original message you want to sent and the generator, return the CRC and the message will be transmitted
+# Usage
 
-# How to run
-
-run
+Run command
 
     ./compile
 
-in terminal to compile the source code and produce the program.
+to make to programs.
 
-run
+# Program
+
+## crc
+
+Given the original message you want to sent and the generator, return the CRC and the message will be transmitted.
+
+You need to put appropriate generator and the message you want to transmitted in file "generator" and "original Message" before you run the program.
+
+To run the program, run
 
     ./crc
 
-to run the program
+in the terminal.
 
-After running, use
+## experimentation
 
-    ./cleanAux
+Given a generator in the file "generator", test how many errors can be detected among much of simulation.
 
-to clean unnecessary files.
+You can edit:
 
-# Notes
-
-You can edit the original message in "message" file and the generator in "generator" file.
+	- the generator in file "generator"
+	- the length (in bits) of original message in the line 9 of "experimentation.cpp"
+	- the length (in bits) of noise in the line 10 of "experimentation.cpp"
+	- the number of experimentation in the line 11 of "experimentation.cpp"
