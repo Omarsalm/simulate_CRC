@@ -32,3 +32,11 @@ You can edit:
 	- the length (in bits) of original message in the line 9 of "experimentation.cpp"
 	- the length (in bits) of noise in the line 10 of "experimentation.cpp"
 	- the number of experimentation in the line 11 of "experimentation.cpp"
+
+# After Using
+
+Run
+
+    ./cleanAux
+
+to clean unnecessary files.

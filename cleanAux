@@ -3,3 +3,5 @@
 rm *.o
 
 rm processed remainder crc
+
+rm check tramsmittedMessage

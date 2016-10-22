@@ -22,23 +22,15 @@ string crc::interrupte(string oriMsg)
 
 void crc::isError(string remainder)
 {
-    if(transmittedMsg == interruptedMsg){
-        numRight++;
-        return;
+    for(int i = 0; i < remainder.size(); i++){
+        if(remainder[i] == '1'){
+            //cout << "The transmitted message has error!\n" << endl;
+            numError++;
+            return;
+        }
     }
-    else{
-        numError++;
-        return;
-    }
-//    for(int i = 0; i < remainder.size(); i++){
-//        if(remainder[i] == '1'){
-//            //cout << "The transmitted message has error!\n" << endl;
-//            numError++;
-//            return;
-//        }
-//    }
-//    //cout << "The transmitted message has no error!\n" << endl;
-//    numRight++;
+    //cout << "The transmitted message has no error!\n" << endl;
+    numRight++;
 }
 
 string crc::getTransmittedMsg()
@@ -110,28 +102,25 @@ string crc::int2str(int* intArray, int len)
     return str;
 }
 
-string crc::cmpCheck(string message, string generator)
+string crc::cmpCheck(string paddedMsg, string generator)
 {
     int i;
     int pos;
-    int degree = generator.size() - 1;
-    message.append(degree, '0');
 
     int *msg;
     int *gen;
     gen = str2int(gen, generator);
-    msg = str2int(msg, message);
+    msg = str2int(msg, paddedMsg);
 
-    for(pos = 0; pos < message.size() - 2 * (degree - 1); pos++){
+    for(pos = 0; pos < paddedMsg.size() - 2 * (degree - 1); pos++){
         if(msg[pos] != 1) continue;
         for(i = 0; i < generator.size(); i++){
             msg[pos + i] = XOR(msg[pos + i], gen[i]);
         }
-
     }
 
-    string remainder = int2str(msg, message.size());
-    remainder = remainder.substr(message.size() - degree, degree);
+    string remainder = int2str(msg, paddedMsg.size());
+    remainder = remainder.substr(paddedMsg.size() - degree, degree);
     return remainder;
 }
 #endif

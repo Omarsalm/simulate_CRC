@@ -21,7 +21,7 @@ int main()
     ins.paddedMsg = ins.paddingOriMsg(ins.oriMsg);
     cout << "padded message: " << ins.paddedMsg << endl;
 
-    ins.check = ins.cmpCheck(ins.oriMsg, ins.generator);
+    ins.check = ins.cmpCheck(ins.paddedMsg, ins.generator);
     cout << "check: " << ins.check << endl;
     ins.putContentToFile(ins.checkFile, ins.check);
 
